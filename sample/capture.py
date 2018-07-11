@@ -4,8 +4,26 @@ import time
 import datetime
 
 directory = '/tmp'
-height = 480
-width = 640
+#height = 480
+height = 1080
+#width = 640
+width = 1920
+
+# tall = 480
+# wide = 640
+#tall = 240
+#wide = 320
+tall = 120
+wide = 160
+#tall = 215
+#wide = 383
+
+h1 = height / 2 - tall / 2
+h2 = height / 2 + tall / 2
+w1 = width  / 2 - wide / 2
+w2 = width  / 2 + wide / 2
+
+
 
 cap = cv2.VideoCapture(1)
 cap.set( 3, width )
@@ -41,10 +59,13 @@ while (True) :
     framesPerSecond = 30
     now = datetime.datetime.now()
     filename = '{}/{}_{}_seconds_{}_fps.avi'.format( directory, now.isoformat(), seconds, framesPerSecond )
-    out = cv2.VideoWriter( filename, fourcc, framesPerSecond, (width,height) )
+    out = cv2.VideoWriter( filename, fourcc, framesPerSecond, (w2 - w1, h2 - h1) )
     print ( filename )
     while time.time() < endtime :
-      out.write( frame )
+#      cropped = frame[ 440 : 640 , 820 : 1100 ]
+      cropped = frame[ h1 : h2, w1 : w2 ]
+      cv2.imshow( 'frame', cropped )
+      out.write( cropped )
 
 #      cv2.imshow( 'frame', frame )
       ret, frame = cap.read()
